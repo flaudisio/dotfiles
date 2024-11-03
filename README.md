@@ -1,17 +1,19 @@
-# rc
+# dotfiles
 
-Arquivos úteis de configuração/execução.
+My configuration files.
 
-## Instalação
+## Installation
 
-+ Clone o repositório e execute o script `install.sh`:
+Clone the repository and run `install.sh`:
 
-        git clone https://github.com/flaudisio/rc.git ~/.rc
-        cd ~/.rc
-        ./install.sh
+```bash
+git clone https://github.com/flaudisio/dotfiles.git ~/.dotfiles
 
-+ Use `./install.sh -h` para as opções de instalação.
+cd ~/.dotfiles
 
-## Licença
+./install.sh -h
+```
 
-Nenhuma (domínio público).
+## License
+
+[WTFPL](LICENSE)
