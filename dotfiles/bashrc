@@ -1,22 +1,19 @@
-# Deve ser interativo
-[ -z "$PS1" ] && return
+# shellcheck shell=bash
+# shellcheck source=/dev/null
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+# Must be in interactive mode
+[[ -z "$PS1" ]] && return
 
-# Histórico
+# History
 shopt -s histappend
 
-# Evita linhas duplicadas
 HISTCONTROL=ignoredups:ignorespace
-
 HISTSIZE=80000
 HISTFILESIZE=160000
 HISTTIMEFORMAT="[%d/%m/%y %T] "
 
-# Suporte a cores
-if [ -x /usr/bin/dircolors ]; then
+# Color support
+if command -v dircolors > /dev/null ; then
     eval "$( dircolors -b )"
 
     alias ls='ls --color=auto'
@@ -25,8 +22,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# Prompt (root = vermelho)
-if [ $( id -u ) -eq 0 ] ; then
+# Prompt color
+if [[ $( id -u ) -eq 0 ]] ; then
     PS1='\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='\[\033[01;34m\]\w\[\033[00m\] \$ '
@@ -40,26 +37,41 @@ case "$TERM" in
 esac
 
 # Bash completion
-if ! shopt -oq posix ; then
-    if [ -f /usr/share/bash-completion/bash_completion ] ; then
+if ! shopt -q -o posix ; then
+    if [[ -f /usr/share/bash-completion/bash_completion ]] ; then
         . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ] ; then
+    elif [[ -f /etc/bash_completion ]] ; then
         . /etc/bash_completion
     fi
 
-    if [ -f ~/.bash_completion ] ; then
+    if [[ -f ~/.bash_completion ]] ; then
         . ~/.bash_completion
     fi
 fi
 
 # Aliases
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 
 # Additional files
-[ -n "$( ls -A ~/.bashrc.d/*.bash 2> /dev/null )" ] && . ~/.bashrc.d/*.bash
+for __rc_file in ~/.bashrc.d/*.bash ; do
+    [[ -f "$__rc_file" ]] || continue
+    . "$__rc_file"
+done
 
-ENABLE_TMUX=0
+unset __rc_file
 
-if [[ $ENABLE_TMUX -eq 1 && $TERM != "screen" ]] ; then
+# Golang
+# export GOROOT="/opt/go"
+# export PATH="${PATH}:${GOROOT}/bin"
+export GOPATH="$HOME/go"
+export PATH="${PATH}:${GOPATH}/bin"
+
+# Tmux (run last)
+
+: "${ENABLE_TMUX:=""}"
+
+if [[ -n "$ENABLE_TMUX" && $TERM != "screen" ]] ; then
     exec tmux
 fi
+
+unset ENABLE_TMUX
