@@ -56,10 +56,7 @@ load_mise
 # ASDF
 function load_asdf()
 {
-    if [[ ! -d "$HOME/.asdf" ]] ; then
-        __msg "Error: directory not found: '$HOME/.asdf'"
-        return 1
-    fi
+    [[ ! -d "$HOME/.asdf" ]] && return
 
     . "${HOME}/.asdf/asdf.sh"
     . "${HOME}/.asdf/completions/asdf.bash"
