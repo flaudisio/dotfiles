@@ -9,7 +9,6 @@ BaseDir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 readonly BaseDir
 
 CreateEnvDirs=0
-InstallGitConfig=0
 InstallPathogen=0
 LnOpts=()
 
@@ -20,7 +19,6 @@ Usage: $0 [options]
 
 Options:
     -f, --force      Overwrite existing files.
-    -g, --gitconfig  Install .gitconfig.
     -d, --env-dirs   Create the ~/.bashrc.d and ~/.profile.d directories.
     -p, --pathogen   Install pathogen.vim.
     -h, --help       Show this message.
@@ -36,10 +34,6 @@ function install_dotfiles()
 
     for dotfile in "${BaseDir}/dotfiles"/* ; do
         filename="$( basename "$dotfile" )"
-
-        if [[ $InstallGitConfig -eq 0 && "$filename" == "gitconfig" ]] ; then
-            continue
-        fi
 
         ln -s -v "${LnOpts[@]}" "$dotfile" "${HOME}/.$filename"
     done
@@ -92,9 +86,6 @@ function main()
         case $1 in
             -f|--force)
                 LnOpts+=( --force )
-            ;;
-            -g|--gitconfig)
-                InstallGitConfig=1
             ;;
             -d|--env-dirs)
                 CreateEnvDirs=1
