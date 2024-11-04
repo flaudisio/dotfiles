@@ -1,21 +1,22 @@
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
+# shellcheck shell=sh
+# shellcheck source=/dev/null
+
+if [ -n "$BASH_VERSION" ] ; then
+    if [ -f "${HOME}/.bashrc" ] ; then
+        . "${HOME}/.bashrc"
     fi
 fi
 
 # Default PATH
-if [ $( id -u ) -eq 0 ] ; then
+if [ "$( id -u )" = "0" ] ; then
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 else
-    PATH="$HOME/.local/bin":/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+    PATH="${HOME}/.local/bin:/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+# Includes user's private bin to PATH if it exists
+if [ -d "${HOME}/bin" ] ; then
+    PATH="${HOME}/bin:$PATH"
 fi
 
 # Additional files
