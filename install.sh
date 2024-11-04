@@ -2,14 +2,13 @@
 #
 # install.sh
 #
+##
 
 set -o pipefail
 
 BaseDir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 readonly BaseDir
 
-CreateEnvDirs=0
-InstallPathogen=0
 LnOpts=()
 
 function _usage()
@@ -18,10 +17,8 @@ function _usage()
 Usage: $0 [options]
 
 Options:
-    -f, --force      Overwrite existing files.
-    -d, --env-dirs   Create the ~/.bashrc.d and ~/.profile.d directories.
-    -p, --pathogen   Install pathogen.vim.
-    -h, --help       Show this message.
+    -f, --force  Overwrite existing files (default: false)
+    -h, --help   Show this message
 EOF
 }
 
@@ -52,23 +49,13 @@ function create_dotconfig_links()
 
 function create_env_dirs()
 {
-    if [[ $CreateEnvDirs -eq 0 ]] ; then
-        echo "--> Skipping creation of env directories"
-        return
-    fi
-
-    echo "--> Creating additional directories..."
+    echo "--> Creating env directories..."
 
     mkdir -p -v "${HOME}/.bashrc.d" "${HOME}/.profile.d"
 }
 
 function install_pathogen()
 {
-    if [[ $InstallPathogen -eq 0 ]] ; then
-        echo "--> Skipping pathogen.vim installation"
-        return
-    fi
-
     if ! command -v wget &> /dev/null ; then
         echo "--> wget not found, so pathogen.vim will not be installed" >&2
     fi
@@ -87,18 +74,12 @@ function main()
             -f|--force)
                 LnOpts+=( --force )
             ;;
-            -d|--env-dirs)
-                CreateEnvDirs=1
-            ;;
-            -p|--pathogen)
-                InstallPathogen=1
-            ;;
             -h|--help)
                 _usage
                 exit 0
             ;;
             *)
-                echo -e "Invalid argument: $1"
+                echo "Invalid argument: $1"
                 _usage
                 exit 2
             ;;
