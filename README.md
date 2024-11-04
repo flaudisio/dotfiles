@@ -16,4 +16,4 @@ cd ~/.dotfiles
 
 ## License
 
-[WTFPL](LICENSE)
+[MIT](LICENSE)
