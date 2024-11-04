@@ -1,10 +1,9 @@
-#
-# Config
-#
+# shellcheck shell=bash
+# shellcheck source=/dev/null
 
-#
-# Aliases
-#
+# ------------------------------------------------------------------------------
+# ALIASES
+# ------------------------------------------------------------------------------
 
 # Core
 alias -- -='cd -'
@@ -12,101 +11,219 @@ alias l='ls -lh'
 alias sl='ls -lh'
 alias lsl='ls -lh'
 alias lsa='ls -lhA'
+alias pathcount="awk -F '/' '{ print NF-1 }'"
+
+# shellcheck disable=SC2032
 alias rm='rm -I'
 
 # SSH / SCP / rsync
-alias scpi='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-alias sshi='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-alias rsynci='rsync -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"'
+alias scpi='scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR'
+alias sshi='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR'
+alias rsynci='rsync -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR"'
 
 # Misc
+alias delpyc='find . -depth -name "__pycache__" -exec rm -rf {} \;'
+alias eo='exo-open'
+alias tree-no-git='tree --dirsfirst -F -a -I ".git|.terragrunt-cache|.terraform|.venv|__pycache__"'
+
+# Dev
 alias tig='tig --all'
-alias tree-no-git='tree -a -I ".git|.terragrunt-cache|.terraform"'
-alias delpyc='find . -iname "*.pyc" -print -delete'
-alias xc='xclip -sel clipboard'
 alias svim='EDITOR=vim sudoedit -H'
 
 command -v colordiff > /dev/null &&
     alias diff='colordiff'
 
-command -v most > /dev/null &&
-    alias man='man -P most'
+# ------------------------------------------------------------------------------
+# FUNCTIONS
+# ------------------------------------------------------------------------------
 
-# DevOps tools
-alias mtn='molecule test --destroy=never'
+function __msg()
+{
+    echo "$@" >&2
+}
 
-# VirtualBox
-if command -v VBoxManage > /dev/null ; then
-    alias vmlist='VBoxManage list vms'
-    alias vmlistr='VBoxManage list runningvms'
+# Mise
+function load_mise()
+{
+    command -v mise > /dev/null || return 0
+
+    # Ref: https://mise.jdx.dev/getting-started.html#bash
+    eval "$( mise activate bash )"
+}
+
+load_mise
+
+# ASDF
+function load_asdf()
+{
+    if [[ ! -d "$HOME/.asdf" ]] ; then
+        __msg "Error: directory not found: '$HOME/.asdf'"
+        return 1
+    fi
+
+    . "${HOME}/.asdf/asdf.sh"
+    . "${HOME}/.asdf/completions/asdf.bash"
+}
+
+load_asdf
+
+function update_asdf_plugin()
+{
+    local set_global_version=1
+    local plugin
+    local latest_version
+
+    if [[ -z "$1" ]] ; then
+        __msg "Usage: ${FUNCNAME[0]} [--no-global-version] <plugin1> [plugin2] [pluginN]"
+        return 2
+    fi
+
+    if [[ "$1" == "--no-global-version" ]] ; then
+        set_global_version=0
+        shift
+    fi
+
+    for plugin in "$@" ; do
+        echo "--> Updating $plugin"
+
+        latest_version="$( asdf latest "$plugin" )"
+
+        if [[ -z "$latest_version" ]] ; then
+            __msg "Error: no latest version found"
+            return 1
+        fi
+
+        echo "Installing $plugin $latest_version"
+
+        asdf install "$plugin" "$latest_version"
+
+        if [[ $set_global_version -eq 1 ]] ; then
+            echo "Setting global version to $latest_version"
+
+            asdf global "$plugin" "$latest_version"
+        fi
+    done
+}
+
+function install_tool_versions()
+{
+    local tools_file=".tool-versions"
+    local tool
+    local version
+    local versions
+
+    if ! command -v asdf > /dev/null ; then
+        __msg "Error: 'asdf' command not found"
+        return 1
+    fi
+
+    if [[ ! -f "$tools_file" ]] ; then
+        __msg "Tools file '$tools_file' not found; ignoring"
+        return 0
+    fi
+
+    __msg "Adding plugins"
+
+    grep -v '^#' "$tools_file" | cut -d ' ' -f 1 | xargs -I '{}' asdf plugin-add '{}'
+
+    grep -E -v '^(#.*)*$' "$tools_file" \
+        | \
+        while read -r tool versions ; do
+            [[ -z "$tool" ]] && continue
+
+            for version in $versions ; do
+                [[ "$version" == "system" ]] && continue
+
+                __msg "Installing $tool $version"
+
+                asdf install "$tool" "$version"
+            done
+        done
+}
+
+if command -v bat > /dev/null ; then
+    # Overwrite colordiff
+    unalias diff 2> /dev/null
+
+    function diff()
+    {
+        command diff "$@" | bat -l diff -p
+    }
+
+    # Aliases
+    alias dbat='bat -l diff'
+    alias jbat='bat -l json'
+    alias ybat='bat -l yaml'
+    alias hbat='bat -l hcl'
+    alias shbat='bat -l sh -p'
+
+    # Ref: https://github.com/sharkdp/bat#using-a-different-pager
+    export BAT_PAGER='less -R -F'
+
+    # Ref: https://github.com/sharkdp/bat#man
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
-#
-# Funções
-#
-
-alias cply='bat -l yaml'
-
-py-cply()
-{
-    local command="pygmentize -l yaml"
-
-    case $1 in
-        -n)
-            $command | nl -ba
-        ;;
-
-        *)
-            $command
-        ;;
-    esac
-}
-
-vminit()
-{
-    [[ "$1" ]] || return 2
-    vboxheadless --vrde off --startvm "$1" > /dev/null &
-}
-
-..()
+function ..()
 {
     local hops="${1:-1}"
     local dest=""
 
     if [[ ! $hops =~ ^[0-9]+$ ]] ; then
-        echo "uso: .. [N]" >&2
+        __msg "Usage: .. HOPS"
         return 2
     fi
 
     while [[ $hops -gt 0 ]] ; do
         dest="${dest}../"
-        let 'hops--'
+        (( hops-- ))
     done
 
     cd "$dest"
 }
 
-mkcd()
+function mkcd()
 {
     mkdir -pv "$@" || return
     cd "$@"
 }
 
-cpmk()
+function cpmk()
 {
     if [[ $# -lt 2 ]] ; then
-        echo "uso: $FUNCNAME <origem1 [origemN]> <destino>"
+        echo "Usage: ${FUNCNAME[0]} SOURCE... DIRECTORY"
+        echo
+        echo "Examples:"
+        echo "  ${FUNCNAME[0]} file1 /some/folder"
+        echo "  ${FUNCNAME[0]} file1 file2 /another/example/folder"
         return 2
     fi
 
-    local readonly dest="${@: -1}" # The last argument
+    # Get the last argument
+    local -r dest="${*: -1}"
 
     mkdir -pv "$dest" || return
     cp -vi "$@"
 }
 
+function grt()
+{
+    local repo_root
+
+    if ! repo_root="$( git rev-parse --show-toplevel )" ; then
+        return 1
+    fi
+
+    [[ "$PWD" != "$repo_root" ]] && cd "$repo_root"
+}
+
+function xc()
+{
+    cat "$@" | xclip -rmlastnl -selection clipboard &> /dev/null
+}
+
 # aws-vault exec
-ax()
+function ax()
 {
     local profile
 
@@ -117,26 +234,26 @@ ax()
     fi
 
     if [[ $# -lt 2 ]] ; then
-        echo "usage:"
-        echo "    ax ls"
-        echo "    ax <profile> <command> [args]"
+        echo "Usage:"
+        echo "  ax ls"
+        echo "  ax <profile> <command> [args]"
         return 2
     fi
 
     profile="$1"
     shift
 
-    echo "+ aws-vault exec "$profile" -- "$@""
+    echo "+ aws-vault exec $profile -- $*"
     aws-vault exec "$profile" -- "$@"
 }
 
-# Cria executável vazio
-cx()
+# Create empty executable file
+function cx()
 {
-    local file="$1"
+    local -r file="$1"
 
     if [[ -z "$file" ]] ; then
-        echo "uso: cx /caminho/do/arquivo.sh" >&2
+        __msg "Usage: ${FUNCNAME[0]} /path/to/file.sh"
         return 2
     fi
 
@@ -148,155 +265,122 @@ cx()
     )
 }
 
-# Corrige permissões: diretórios = 755, arquivos = 644
-fixperms()
+# Fix permissions: directories = 755, files = 644
+function fixperms()
 {
-    local v
+    local opts=()
 
-    [[ "$1" = "-v" ]] && { v="-v" ; shift ; }
+    if [[ "$1" == "-v" ]] ; then
+        opts+=( -v )
+        shift
+    fi
 
-    [[ -z "$1" ]] && {
-        echo "$FUNCNAME: missing operand" >&2
+    local -r target_dir="$1"
+
+    if [[ -z "$target_dir" ]] ; then
+        __msg "Usage: ${FUNCNAME[0]} [-v] DIRECTORY"
         return 2
-    }
-
-    echo "Updating directory permissions of '${*}' to 755 (rwxr-xr-x) ..."
-    find "${*}" -type d -exec chmod $v 755 {} \;
-
-    [[ -n "$v" ]] && echo
-
-    echo "Updating file permissions of '${*}' to 644 (rw-r--r--) ..."
-    find "${*}" -type f -exec chmod $v 644 {} \;
-}
-
-# ASDF
-load_asdf()
-{
-    . $HOME/.asdf/asdf.sh
-    . $HOME/.asdf/completions/asdf.bash
-}
-
-load_asdf
-
-# virtualenv / virtualenvwrapper
-load_virtualenv()
-{
-    export WORKON_HOME=~/.virtualenvs
-    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-
-    source /usr/local/bin/virtualenvwrapper.sh || return
-
-    if [[ -n "$1" ]] && workon "$1" ; then
-        [[ $? -eq 0 ]] && echo "Loaded virtualenv: $1"
     fi
+
+    echo "Updating directory permissions of '$target_dir' to 755 (rwxr-xr-x) ..."
+    find "$target_dir" -type d -exec chmod "${opts[@]}" 755 {} \;
+
+    [[ "${opts[0]}" == "-v" ]] && echo
+
+    echo "Updating file permissions of '$target_dir' to 644 (rw-r--r--) ..."
+    find "$target_dir" -type f -exec chmod "${opts[@]}" 644 {} \;
 }
 
-alias lv='load_virtualenv'
-alias lovenv='load_virtualenv'
-
-# nvm
-load_nvm()
-{
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-}
-
-# rbenv
-load_rbenv()
-{
-    if [[ -d "$HOME/.rbenv" ]] ; then
-        export PATH="$HOME/.rbenv/bin:$PATH"
-        eval "$(rbenv init -)"
-    else
-        echo "fatal: directory $HOME/.rbenv not found. Aborting." >&2
-        return 1
-    fi
-}
-
-# rvm
-load_rvm()
-{
-    # Load RVM into a shell session *as a function*
-    if [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
-        source "$HOME/.rvm/scripts/rvm"
-    else
-        echo "fatal: RVM not found in $HOME/.rvm/scripts/rvm. Aborting." >&2
-        return 1
-    fi
-}
-
-# Docker
-wipe_containers()
-{
-    local container
-    local docker_opts
-
-    [[ "$1" ]] || return 2
-
-    [[ "$1" == "--rm" ]] && docker_opts="-a"
-
-    for container in $( docker ps -q $docker_opts ) ; do
-        docker "${@/--/}" "$container"
-    done
-}
-
-kill_all_containers() { wipe_containers --kill  ; }
-stop_all_containers() { wipe_containers --stop  ; }
-rm_all_containers()   { wipe_containers --rm -v ; }
-
-alias rm_dangling_images='docker image prune --force'
-alias rm_dangling_volumes='docker volume prune --force'
-
-docker_cleanup()
-{
-    local cmd
-
-    for cmd in \
-        kill_all_containers \
-        rm_all_containers \
-        rm_dangling_images \
-        rm_dangling_volumes
-    do
-        echo "-> $cmd"
-        "$cmd" || return $?
-    done
-}
-
-pgreps()
+function debchangelog()
 {
     if [[ -z "$1" ]] ; then
-        echo "uso: $FUNCNAME <processo>" >&2
+        __msg "Usage: ${FUNCNAME[0]} <package>"
         return 2
     fi
 
-    ps aux | egrep "$1" | grep -v grep
+    zless "/usr/share/doc/$1"/changelog*.gz
 }
 
-debchangelog()
+# shellcheck disable=SC2033
+function fcleanup()
 {
-    if [[ -z "$1" ]] ; then
-        echo "usage: $FUNCNAME <package>" >&2
+    case $1 in
+        --tf|--terraform)
+            find . -type d \( -name '.terragrunt-cache' -o -name '.terraform' \) -print -prune -exec rm -rf '{}' \;
+            find . -type f -name '.terraform.lock.hcl' -print -prune -exec rm -f '{}' \;
+        ;;
+        *)
+            __msg "Usage: ${FUNCNAME[0]} --tf|--terraform"
+            return 2
+        ;;
+    esac
+}
+
+function makevenv()
+{
+    local -r venv_name="$1"
+    local -r venv_dir="${HOME}/.venvs/${venv_name}"
+
+    if [[ -z "$venv_name" ]] ; then
+        __msg "Usage: ${FUNCNAME[0]} <virtualenv>"
         return 2
     fi
 
-    zless /usr/share/doc/$1/changelog*.gz
+    __msg "Creating virtualenv on '$venv_dir'"
+
+    if python3 -m venv --upgrade-deps "$venv_dir" ; then
+        __msg "Success! Activating it now"
+
+        . "${venv_dir}/bin/activate"
+        return
+    fi
+
+    __msg "Error creating virtualenv; see output for details"
+    return 1
 }
 
-#
-# Inutilitários (ou não)
-#
-
-myip()
+function genmac()
 {
-    local my_ip="$( curl -sSL -4 ifconfig.io )"
-
-    echo "$my_ip copied to clipboard!"
-
-    xclip -sel clipboard <( echo -n "$my_ip" )
+    # The last sed expression ensures the unicast/multicast bit is set to zero
+    # Ref:
+    # - https://serverfault.com/a/801504
+    # - https://stackoverflow.com/a/42683473
+    openssl rand -hex 6 | sed -E -e 's|(..)|\1:|g' -e 's|:$||' -e 's|^(.)[13579bdf]|\10|'
 }
 
-shrug()
+function myip()
 {
-    xclip -sel clipboard <( echo -n '¯\_(ツ)_/¯' )
+    local ifconfig_ret
+
+    ifconfig_ret="$( curl --fail -sSL "$@" https://ifconfig.me 2>&1 )"
+
+    if [[ "$ifconfig_ret" == *error* ]] ; then
+        __msg "Fatal: $ifconfig_ret"
+        return 1
+    fi
+
+    echo "$ifconfig_ret" | xclip -filter -selection clipboard || return
+
+    echo "$ifconfig_ret copied to clipboard!"
+}
+
+function tp()
+{
+    case $1 in
+        on|1)
+            synclient TouchpadOff=0
+        ;;
+        off|0)
+            synclient TouchpadOff=1
+        ;;
+        *)
+            __msg "Usage: ${FUNCNAME[0]} <1|0>"
+            return 2
+        ;;
+    esac
+}
+
+function shrug()
+{
+    echo '¯\_(ツ)_/¯' | xclip -rmlastnl -selection clipboard &> /dev/null
 }
