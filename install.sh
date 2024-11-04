@@ -3,81 +3,125 @@
 # install.sh
 #
 
-BaseDir="$( cd "$( dirname "$0" )" ; pwd )"
+set -o pipefail
 
-LnOpts=""
-GitConfig=0
-EnvDirs=0
-Pathogen=0
+BaseDir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+readonly BaseDir
 
-usage()
+CreateEnvDirs=0
+InstallGitConfig=0
+InstallPathogen=0
+LnOpts=()
+
+function _usage()
 {
     cat << EOF
-Uso: $0 [opções]
+Usage: $0 [options]
 
-Opções:
-    -f, --force      Sobrescreve os arquivos existentes.
-    -g, --gitconfig  Instala o .gitconfig.
-    -d, --env-dirs   Cria os diretórios ~/.bashrc.d e ~/.profile.d.
-    -p, --pathogen   Instala o pathogen.vim.
-    -h, --help       Mostra esta mensagem.
+Options:
+    -f, --force      Overwrite existing files.
+    -g, --gitconfig  Install .gitconfig.
+    -d, --env-dirs   Create the ~/.bashrc.d and ~/.profile.d directories.
+    -p, --pathogen   Install pathogen.vim.
+    -h, --help       Show this message.
 EOF
 }
 
-while [[ $# -gt 0 ]] ; do
-    case $1 in
-        -f|--force)
-            LnOpts="-f"
-        ;;
-        -g|--gitconfig)
-            GitConfig=1
-        ;;
-        -d|--env-dirs)
-            EnvDirs=1
-        ;;
-        -p|--pathogen)
-            Pathogen=1
-        ;;
-        -h|--help)
-            usage ; exit 0
-        ;;
-        *)
-            echo -e "Opção desconhecida: $1\n\n$( usage )" >&2
-            exit 2
-        ;;
-    esac
-    shift
-done
+function install_dotfiles()
+{
+    local dotfile
+    local filename
 
-echo "--> Instalando arquivos..."
+    echo "--> Installing dotfiles..."
 
-for f in "$BaseDir/dotfiles"/* ; do
-    file="$( basename "$f" )"
+    for dotfile in "${BaseDir}/dotfiles"/* ; do
+        filename="$( basename "$dotfile" )"
 
-    if [[ $GitConfig -eq 0 && "$file" == "gitconfig" ]] ; then
-        continue
+        if [[ $InstallGitConfig -eq 0 && "$filename" == "gitconfig" ]] ; then
+            continue
+        fi
+
+        ln -s -v "${LnOpts[@]}" "$dotfile" "${HOME}/.$filename"
+    done
+}
+
+function create_dotconfig_links()
+{
+    local src_dir
+
+    echo "--> Creating .config symlinks..."
+
+    for src_dir in "${BaseDir}/dotconfig"/* ; do
+        ln -s -v "${LnOpts[@]}" "$src_dir" "${HOME}/.config"
+    done
+}
+
+function create_env_dirs()
+{
+    if [[ $CreateEnvDirs -eq 0 ]] ; then
+        echo "--> Skipping creation of env directories"
+        return
     fi
 
-    ln -sv $LnOpts "$f" "$HOME/.$file"
-done
+    echo "--> Creating additional directories..."
 
-if [[ $EnvDirs -eq 1 ]] ; then
-    echo "--> Criando diretórios adicionais..."
-    mkdir -pv ~/.bashrc.d ~/.profile.d
-fi
+    mkdir -p -v "${HOME}/.bashrc.d" "${HOME}/.profile.d"
+}
 
-if [[ $Pathogen -eq 1 ]] ; then
-    if command -v wget &> /dev/null ; then
-        echo "--> Instalando pathogen.vim..."
-
-        mkdir -pv ~/.vim/{autoload,bundle}
-        wget -q https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
-    else
-        echo "--> wget não encontrado, pathogen.vim não instalado." >&2
+function install_pathogen()
+{
+    if [[ $InstallPathogen -eq 0 ]] ; then
+        echo "--> Skipping pathogen.vim installation"
+        return
     fi
-else
-    echo "--> Pulando instalação do pathogen.vim."
-fi
 
+    if ! command -v wget &> /dev/null ; then
+        echo "--> wget not found, so pathogen.vim will not be installed" >&2
+    fi
 
-echo "--> Pronto."
+    echo "--> Installing pathogen.vim..."
+
+    mkdir -p -v "${HOME}/.vim/{autoload,bundle}"
+
+    wget -q https://tpo.pe/pathogen.vim -O "${HOME}/.vim/autoload/pathogen.vim"
+}
+
+function main()
+{
+    while [[ $# -gt 0 ]] ; do
+        case $1 in
+            -f|--force)
+                LnOpts+=( --force )
+            ;;
+            -g|--gitconfig)
+                InstallGitConfig=1
+            ;;
+            -d|--env-dirs)
+                CreateEnvDirs=1
+            ;;
+            -p|--pathogen)
+                InstallPathogen=1
+            ;;
+            -h|--help)
+                _usage
+                exit 0
+            ;;
+            *)
+                echo -e "Invalid argument: $1"
+                _usage
+                exit 2
+            ;;
+        esac
+
+        shift
+    done
+
+    install_dotfiles
+    create_dotconfig_links
+    create_env_dirs
+    install_pathogen
+
+    echo "--> Done"
+}
+
+main "$@"
