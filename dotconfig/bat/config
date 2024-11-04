@@ -1,0 +1,8 @@
+--map-syntax "**/.aws/{config,credentials}*:INI"
+--map-syntax "**/.chef/credentials:TOML"
+--map-syntax "**/.cinc/credentials:TOML"
+--map-syntax "**/.kube/config:YAML"
+--map-syntax "**/.oci/config:INI"
+--map-syntax "*.bats:Bourne Again Shell (bash)"
+--map-syntax "*.nomad:Terraform"
+--map-syntax ".terraformrc:Terraform"

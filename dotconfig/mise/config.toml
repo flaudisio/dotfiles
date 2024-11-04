@@ -1,0 +1,3 @@
+[settings]
+# Ref: https://mise.jdx.dev/configuration.html#status-missing-tools
+status.missing_tools = "never"
