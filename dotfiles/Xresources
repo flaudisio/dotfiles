@@ -1,9 +1,0 @@
-# Fontes - terminal (i3)
-# Ref: https://www.reddit.com/r/i3wm/comments/41mvug/how_to_improve_font_rendering_in_i3/cz3v7s3/
-Xft.autohint: 0
-Xft.antialias: 1
-Xft.hinting: true
-Xft.hintstyle: hintslight
-Xft.dpi: 96
-Xft.rgba: rgb
-Xft.lcdfilter: lcddefault
