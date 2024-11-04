@@ -24,25 +24,20 @@ EOF
 
 function install_dotfiles()
 {
-    local dotfile
-    local filename
+    local src_file
+    local src_dir
 
     echo "--> Installing dotfiles..."
 
-    for dotfile in "${BaseDir}/dotfiles"/* ; do
-        filename="$( basename "$dotfile" )"
+    for src_file in "${BaseDir}/src"/.* ; do
+        [[ -f "$src_file" ]] || continue
 
-        ln -s -v "${LnOpts[@]}" "$dotfile" "${HOME}/.$filename"
+        ln -s -v "${LnOpts[@]}" "$src_file" "${HOME}"
     done
-}
-
-function create_dotconfig_links()
-{
-    local src_dir
 
     echo "--> Creating .config symlinks..."
 
-    for src_dir in "${BaseDir}/dotconfig"/* ; do
+    for src_dir in "${BaseDir}/src/.config"/* ; do
         ln -s -v "${LnOpts[@]}" "$src_dir" "${HOME}/.config"
     done
 }
@@ -89,7 +84,6 @@ function main()
     done
 
     install_dotfiles
-    create_dotconfig_links
     create_env_dirs
     install_pathogen
 
