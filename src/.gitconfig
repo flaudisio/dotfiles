@@ -49,7 +49,7 @@
 [color]
     ui = auto
 # [commit]
-# template = ~/.gitmessage
+#     template = ~/.gitmessage
 [init]
     templateDir = ~/.git-template
     defaultBranch = main
