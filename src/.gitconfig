@@ -1,65 +1,65 @@
 [user]
-	name = Flaudísio Tolentino
-	email = flaudisio@gmail.com
+    name = Flaudísio Tolentino
+    email = flaudisio@gmail.com
 [alias]
-	a = add
-	b = branch
-	ck = checkout
-	cs = commit --cleanup scissors
-	d = diff
-	dc = diff --check
-	dca = diff --staged
-	dcc = diff --staged --check
-	dcs = diff --staged --stat
-	dn = diff --name-only
-	ds = diff --stat
-	f = fetch
-	fa = fetch --all
-	fap = fetch --all --tags --prune
-	fdx = clean -i -fdX
-	fdxx = clean -i -fdx
-	g = gui
-	k = !gitk --all
-	l = log
-	l1 = log -1
-	l30 = log --oneline -n 30
-	lf = log --pretty=fuller
-	list-ignored = !find . -type f | sort | git check-ignore --no-index --stdin
-	lo = log --oneline
-	lp = log --patch
-	ls = log --stat
-	m = merge
-	mr = push -u origin HEAD
-	o = open
-	optimize = gc --aggressive --prune=now
-	pp = pull --all --tags --prune
-	rv = remote -v
-	s = status
-	sc = switch -c
-	sl = stash list
-	sm = switch main
-	sp = stash pop stash@{0}
-	sw = show
-	swc = show --check
-	sws = show --stat
-	t = tag --sort=version:refname
-	uas = submodule foreach git pull
+    a = add
+    b = branch
+    ck = checkout
+    cs = commit --cleanup scissors
+    d = diff
+    dc = diff --check
+    dca = diff --staged
+    dcc = diff --staged --check
+    dcs = diff --staged --stat
+    dn = diff --name-only
+    ds = diff --stat
+    f = fetch
+    fa = fetch --all
+    fap = fetch --all --tags --prune
+    fdx = clean -i -fdX
+    fdxx = clean -i -fdx
+    g = gui
+    k = !gitk --all
+    l = log
+    l1 = log -1
+    l30 = log --oneline -n 30
+    lf = log --pretty=fuller
+    list-ignored = !find . -type f | sort | git check-ignore --no-index --stdin
+    lo = log --oneline
+    lp = log --patch
+    ls = log --stat
+    m = merge
+    mr = push -u origin HEAD
+    o = open
+    optimize = gc --aggressive --prune=now
+    pp = pull --all --tags --prune
+    rv = remote -v
+    s = status
+    sc = switch -c
+    sl = stash list
+    sm = switch main
+    sp = stash pop stash@{0}
+    sw = show
+    swc = show --check
+    sws = show --stat
+    t = tag --sort=version:refname
+    uas = submodule foreach git pull
     clmerged = !git branch -d $( git branch --merged | grep -v -E '[ \t](main|master)$' )
     wtf = log --pretty=format:\"%C(auto,yellow)%h%C(auto)%d%C(auto,reset) by %C(auto,blue)%cn%C(auto,reset), %C(auto,cyan)%ar%C(auto,reset)%n %s%n\" --stat
 [color]
-	ui = auto
+    ui = auto
 # [commit]
-# 	template = ~/.gitmessage
+# template = ~/.gitmessage
 [init]
-	templateDir = ~/.git-template
-	defaultBranch = main
+    templateDir = ~/.git-template
+    defaultBranch = main
 [merge]
-	defaultToUpstream = true
+    defaultToUpstream = true
 [push]
-	default = simple
+    default = simple
 [gui]
-	# Ref: https://www.tcl.tk/man/tcl8.5/TkCmd/font.htm#M26
-	fontui = -family \"DejaVu Sans\" -size 9 -weight normal -slant roman -underline 0 -overstrike 0
-	fontdiff = -family \"DejaVu Sans Mono\" -size 9 -weight normal -slant roman -underline 0 -overstrike 0
-	spellingdictionary = none
-	geometry = 1182x729+0+24 536 439
+    # Ref: https://www.tcl.tk/man/tcl8.5/TkCmd/font.htm#M26
+    fontui = -family \"DejaVu Sans\" -size 9 -weight normal -slant roman -underline 0 -overstrike 0
+    fontdiff = -family \"DejaVu Sans Mono\" -size 9 -weight normal -slant roman -underline 0 -overstrike 0
+    spellingdictionary = none
+    geometry = 1182x729+0+24 536 439
