@@ -9,6 +9,11 @@ set -o pipefail
 BaseDir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 readonly BaseDir
 
+VimPlugins=(
+    https://github.com/editorconfig/editorconfig-vim.git
+    https://github.com/hashivim/vim-terraform.git
+)
+
 LnOpts=()
 
 function _usage()
@@ -49,17 +54,26 @@ function create_env_dirs()
     mkdir -p -v "${HOME}/.bashrc.d" "${HOME}/.profile.d"
 }
 
-function install_pathogen()
+function install_vim_plugins()
 {
-    if ! command -v wget &> /dev/null ; then
-        echo "--> wget not found, so pathogen.vim will not be installed" >&2
-    fi
+    local plugin_repo
+    local plugin_dir
 
-    echo "--> Installing pathogen.vim..."
+    echo "--> Installing Vim plugins..."
 
-    mkdir -p -v "${HOME}/.vim/{autoload,bundle}"
+    for plugin_repo in "${VimPlugins[@]}" ; do
+        plugin_dir="${HOME}/.vim/pack/plugins/start/$( basename "${plugin_repo/.git/}" )"
 
-    wget -q https://tpo.pe/pathogen.vim -O "${HOME}/.vim/autoload/pathogen.vim"
+        if [[ ! -d "$plugin_dir" ]] ; then
+            echo "--> Installing plugin '$plugin_repo'"
+
+            git clone "$plugin_repo" "$plugin_dir"
+        else
+            echo "--> Directory '$plugin_dir' already exists, running 'git pull'"
+
+            git -C "$plugin_dir" pull
+        fi
+    done
 }
 
 function main()
@@ -85,7 +99,7 @@ function main()
 
     install_dotfiles
     create_env_dirs
-    install_pathogen
+    install_vim_plugins
 
     echo "--> Done"
 }
