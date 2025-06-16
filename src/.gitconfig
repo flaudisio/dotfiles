@@ -16,6 +16,7 @@
     f = fetch
     fa = fetch --all
     fap = fetch --all --tags --prune
+    faprom = !git fap && git rom
     fdx = clean -i -fdX
     fdxx = clean -i -fdx
     g = gui
@@ -33,6 +34,8 @@
     o = open
     optimize = gc --aggressive --prune=now
     pp = pull --all --tags --prune
+    rom = rebase origin/main
+    roms = rebase origin/master
     rv = remote -v
     s = status
     sc = switch -c
