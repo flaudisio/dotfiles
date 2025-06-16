@@ -334,7 +334,7 @@ function myip()
         return 1
     fi
 
-    echo "$ifconfig_ret" | xclip -filter -selection clipboard || return
+    echo "$ifconfig_ret" | xclip -rmlastnl -selection clipboard &> /dev/null || return
 
     echo "$ifconfig_ret copied to clipboard!"
 }
