@@ -56,11 +56,6 @@ map 0 ^
 map <Tab> :tabnext<cr>
 map <S-Tab> :tabprevious<cr>
 
-" Pathogen
-if filereadable(expand($HOME . "/.vim/autoload/pathogen.vim"))
-    execute pathogen#infect()
-endif
-
 " Syntax highlighting
 au BufNewFile,BufRead Jenkinsfile set filetype=groovy
 au BufNewFile,BufRead Vagrantfile set filetype=ruby
