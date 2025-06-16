@@ -42,28 +42,6 @@ function __msg()
     echo "$@" >&2
 }
 
-# Mise
-function load_mise()
-{
-    command -v mise > /dev/null || return 0
-
-    # Ref: https://mise.jdx.dev/getting-started.html#bash
-    eval "$( mise activate bash )"
-}
-
-load_mise
-
-# ASDF
-function load_asdf()
-{
-    [[ ! -d "$HOME/.asdf" ]] && return
-
-    . "${HOME}/.asdf/asdf.sh"
-    . "${HOME}/.asdf/completions/asdf.bash"
-}
-
-load_asdf
-
 function update_asdf_plugin()
 {
     local set_global_version=1
