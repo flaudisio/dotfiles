@@ -1,3 +1,20 @@
 [settings]
 # Ref: https://mise.jdx.dev/configuration/settings.html#status.missing_tools
 status.missing_tools = "never"
+
+trusted_config_paths = [
+  "~/projects",
+]
+
+[tools]
+aws-cli = "2"
+aws-nuke = "2.25.0"
+cosign = "2"
+granted = "0.38"
+helm = "3"
+jnv = "0.5.0"
+k9s = "0"
+kubectl = "1.31"
+"ubi:gitlab-org/cli" = { version = "1", exe = "glab", provider = "gitlab" }
+vault = "1.19.1"
+yq = "4.44.3"
