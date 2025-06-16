@@ -64,6 +64,8 @@ au BufNewFile,BufRead docker-compose*.yml set filetype=yaml
 au BufNewFile,BufRead kops-edit*yaml set filetype=yaml
 au BufNewFile,BufRead *.aws/config* set filetype=cfg
 au BufNewFile,BufRead *.aws/credentials* set filetype=cfg
+au BufNewFile,BufRead *.chef/credentials* set filetype=toml
+au BufNewFile,BufRead *.cinc/credentials* set filetype=toml
 au BufNewFile,BufRead *.edgerc set filetype=cfg
 au BufNewFile,BufRead *.kube/config set filetype=yaml
 au BufNewFile,BufRead *.nomad set filetype=hcl
@@ -73,7 +75,7 @@ au BufNewFile,BufRead *.textile set filetype=redminewiki
 au BufNewFile,BufRead *.tfstate set filetype=json
 
 " Settings for specific filetypes
-autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype hcl,terraform,tf setlocal ts=2 sts=2 sw=2
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype toml setlocal ts=2 sts=2 sw=2
 autocmd Filetype yaml setlocal ts=2 sts=2 sw=2
