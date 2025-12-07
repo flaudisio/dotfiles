@@ -26,9 +26,12 @@ alias delpyc='find . -depth -name "__pycache__" -exec rm -rf {} \;'
 alias eo='exo-open'
 alias tree-no-git='tree --dirsfirst -F -a -I ".git|.terragrunt-cache|.terraform|.venv|__pycache__"'
 
+# Infra
+alias k='kubectl'
+
 # Dev
 alias tig='tig --all'
-alias svim='EDITOR=vim sudoedit -H'
+alias svim='sudo -H vim'
 
 command -v colordiff > /dev/null &&
     alias diff='colordiff'
@@ -127,10 +130,11 @@ if command -v bat > /dev/null ; then
 
     # Aliases
     alias dbat='bat -l diff'
+    alias hbat='bat -l hcl'
     alias jbat='bat -l json'
     alias ybat='bat -l yaml'
-    alias hbat='bat -l hcl'
     alias shbat='bat -l sh -p'
+    alias tbat='bat -l toml'
 
     # Ref: https://github.com/sharkdp/bat#using-a-different-pager
     export BAT_PAGER='less -R -F'
@@ -222,7 +226,26 @@ function ax()
     aws-vault exec "$profile" -- "$@"
 }
 
-# Create empty executable file
+# Create empty file, ensuring all parent directories exist
+function cf()
+{
+    local -r file="$1"
+    local -r mode="${2:-"664"}"
+
+    if [[ -z "$file" ]] ; then
+        __msg "Usage: ${FUNCNAME[0]} /path/to/file"
+        return 2
+    fi
+
+    (
+        set -ex
+        mkdir -p "$( dirname "$file" )"
+        touch "$file"
+        chmod "$mode" "$file"
+    )
+}
+
+# Create an empty executable file
 function cx()
 {
     local -r file="$1"
@@ -232,12 +255,7 @@ function cx()
         return 2
     fi
 
-    (
-        set -ex
-        mkdir -p "$( dirname "$file" )"
-        touch "$file"
-        chmod 755 "$file"
-    )
+    cf "$file" 755
 }
 
 # Fix permissions: directories = 755, files = 644
