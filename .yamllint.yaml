@@ -9,12 +9,12 @@ rules:
     max-spaces-inside: 1
     level: error
   comments-indentation: disable
+  document-start:
+    ignore: |
+      **/.copier-answers*.yml
   empty-lines:
     max: 1
   indentation:
     spaces: 2
   line-length:
-    max: 140
-  truthy:
-    allowed-values: ["true", "false", "yes", "no"]
-    check-keys: true
+    max: 120
