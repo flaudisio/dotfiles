@@ -6,15 +6,15 @@
 
 set -o pipefail
 
-BaseDir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-readonly BaseDir
+BASE_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+readonly BASE_DIR
 
-VimPlugins=(
+VIM_PLUGINS=(
     https://github.com/editorconfig/editorconfig-vim.git
     https://github.com/hashivim/vim-terraform.git
 )
 
-LnOpts=()
+LN_OPTS=()
 
 function _usage()
 {
@@ -34,16 +34,16 @@ function install_dotfiles()
 
     echo "--> Installing dotfiles..."
 
-    for src_file in "${BaseDir}/src"/.* ; do
+    for src_file in "${BASE_DIR}/src"/.* ; do
         [[ -f "$src_file" ]] || continue
 
-        ln -s -v "${LnOpts[@]}" "$src_file" "${HOME}"
+        ln -s -v "${LN_OPTS[@]}" "$src_file" "${HOME}"
     done
 
     echo "--> Creating .config symlinks..."
 
-    for src_dir in "${BaseDir}/src/.config"/* ; do
-        ln -s -v "${LnOpts[@]}" "$src_dir" "${HOME}/.config"
+    for src_dir in "${BASE_DIR}/src/.config"/* ; do
+        ln -s -v "${LN_OPTS[@]}" "$src_dir" "${HOME}/.config"
     done
 }
 
@@ -61,7 +61,7 @@ function install_vim_plugins()
 
     echo "--> Installing Vim plugins..."
 
-    for plugin_repo in "${VimPlugins[@]}" ; do
+    for plugin_repo in "${VIM_PLUGINS[@]}" ; do
         plugin_dir="${HOME}/.vim/pack/plugins/start/$( basename "${plugin_repo/.git/}" )"
 
         if [[ ! -d "$plugin_dir" ]] ; then
@@ -81,7 +81,7 @@ function main()
     while [[ $# -gt 0 ]] ; do
         case $1 in
             -f|--force)
-                LnOpts+=( --force )
+                LN_OPTS+=( --force )
             ;;
             -h|--help)
                 _usage
