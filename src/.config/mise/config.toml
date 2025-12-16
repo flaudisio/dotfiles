@@ -10,7 +10,7 @@ trusted_config_paths = [
 aws-cli = { version = "2", symlink_bins = "true" }
 cookiecutter = "2"
 copier = "9"
-cosign = "2"
+cosign = "latest"
 dive = "latest"
 doctl = "1"
 glab = "1"
