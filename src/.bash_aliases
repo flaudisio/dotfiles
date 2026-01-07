@@ -33,9 +33,6 @@ alias k='kubectl'
 alias tig='tig --all'
 alias svim='sudo -H vim'
 
-command -v colordiff > /dev/null &&
-    alias diff='colordiff'
-
 # ------------------------------------------------------------------------------
 # FUNCTIONS
 # ------------------------------------------------------------------------------
