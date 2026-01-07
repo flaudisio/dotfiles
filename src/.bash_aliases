@@ -133,11 +133,12 @@ if command -v bat > /dev/null ; then
     alias shbat='bat -l sh -p'
     alias tbat='bat -l toml'
 
-    # Ref: https://github.com/sharkdp/bat#using-a-different-pager
-    export BAT_PAGER='less -R -F'
+    # Ref: https://github.com/sharkdp/bat#using-less-as-a-pager
+    export BAT_PAGER='less'
 
-    # Ref: https://github.com/sharkdp/bat#man
+    # Ref: https://github.com/sharkdp/bat/issues/2753#issuecomment-1793724885
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT='-c'
 fi
 
 function ..()
