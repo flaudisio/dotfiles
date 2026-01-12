@@ -39,7 +39,7 @@ alias svim='sudo -H vim'
 
 function __msg()
 {
-    echo "$@" >&2
+    echo "$*" >&2
 }
 
 if command -v bat > /dev/null ; then
@@ -84,26 +84,36 @@ function ..()
 
 function mkcd()
 {
-    mkdir -pv "$@" || return
+    mkdir -p -v "$@" || return
     cd "$@"
 }
 
 function cpmk()
 {
     if [[ $# -lt 2 ]] ; then
-        echo "Usage: ${FUNCNAME[0]} SOURCE... DIRECTORY"
-        echo
-        echo "Examples:"
-        echo "  ${FUNCNAME[0]} file1 /some/folder"
-        echo "  ${FUNCNAME[0]} file1 file2 /another/example/folder"
+        __msg "Usage: ${FUNCNAME[0]} SOURCE... DIRECTORY"
+        __msg
+        __msg "Examples:"
+        __msg "  ${FUNCNAME[0]} file1 /some/folder"
+        __msg "  ${FUNCNAME[0]} file1 file2 /another/example/folder"
         return 2
     fi
 
     # Get the last argument
     local -r dest="${*: -1}"
 
-    mkdir -pv "$dest" || return
+    mkdir -p -v "$dest" || return
     cp -vi "$@"
+}
+
+# shellcheck disable=SC2120
+function xc()
+{
+    if [[ -n "$1" ]] ; then
+        cat "$@" | xclip -rmlastnl -selection clipboard
+    else
+        xclip -rmlastnl -selection clipboard
+    fi
 }
 
 function grt()
@@ -115,11 +125,6 @@ function grt()
     fi
 
     [[ "$PWD" != "$repo_root" ]] && cd "$repo_root"
-}
-
-function xc()
-{
-    cat "$@" | xclip -rmlastnl -selection clipboard &> /dev/null
 }
 
 # Create empty file, ensuring all parent directories exist
@@ -199,9 +204,9 @@ function myip()
         return 1
     fi
 
-    echo "$ifconfig_ret" | xclip -rmlastnl -selection clipboard &> /dev/null || return
+    echo "$ifconfig_ret" | xc || return
 
-    echo "$ifconfig_ret copied to clipboard!"
+    __msg "$ifconfig_ret copied to clipboard!"
 }
 
 function tp()
@@ -222,5 +227,5 @@ function tp()
 
 function shrug()
 {
-    echo '¯\_(ツ)_/¯' | xclip -rmlastnl -selection clipboard &> /dev/null
+    echo '¯\_(ツ)_/¯' | xc
 }
