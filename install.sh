@@ -29,29 +29,16 @@ EOF
 
 function install_dotfiles()
 {
-    local src_file
-    local src_dir
+    local src_path
 
     echo "--> Installing dotfiles..."
 
-    for src_file in "${BASE_DIR}/src"/.* ; do
-        [[ -f "$src_file" ]] || continue
+    # Ignore current and upper directories
+    GLOBIGNORE=".:.."
 
-        ln -s -v "${LN_OPTS[@]}" "$src_file" "${HOME}"
+    for src_path in "${BASE_DIR}/src"/.* ; do
+        ln -s -v "${LN_OPTS[@]}" "$src_path" "${HOME}"
     done
-
-    echo "--> Creating .config symlinks..."
-
-    for src_dir in "${BASE_DIR}/src/.config"/* ; do
-        ln -s -v "${LN_OPTS[@]}" "$src_dir" "${HOME}/.config"
-    done
-}
-
-function create_env_dirs()
-{
-    echo "--> Creating env directories..."
-
-    mkdir -p -v "${HOME}/.bashrc.d" "${HOME}/.profile.d"
 }
 
 function install_vim_plugins()
@@ -98,7 +85,6 @@ function main()
     done
 
     install_dotfiles
-    create_env_dirs
     install_vim_plugins
 
     echo "--> Done"

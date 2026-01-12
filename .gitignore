@@ -153,3 +153,12 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,linux,windows,archives,visualstudiocode,certificates,macos
+
+# ------------------------------------------------------------------------------
+# CUSTOM
+# ------------------------------------------------------------------------------
+
+### External files ###
+
+# Managed by Ansible - https://github.com/flaudisio/linux-setup-playbook
+**/.bashrc.d/mise.bash
