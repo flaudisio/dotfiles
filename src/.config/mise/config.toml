@@ -3,7 +3,8 @@
 status.missing_tools = "never"
 
 trusted_config_paths = [
-  "~/projects",
+  "~/projects/flaudisio",
+  "~/projects/labs",
 ]
 
 [tools]
