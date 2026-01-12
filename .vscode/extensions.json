@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "christian-kohler.path-intellisense",
-    "EditorConfig.EditorConfig"
+    "EditorConfig.EditorConfig",
+    "timonwong.shellcheck"
   ]
 }
