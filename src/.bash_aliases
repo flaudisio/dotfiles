@@ -25,6 +25,7 @@ alias rsynci='rsync -e "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChec
 alias delpyc='find . -depth -name "__pycache__" -exec rm -rf {} \;'
 alias eo='exo-open'
 alias tree-no-git='tree --dirsfirst -F -a -I ".git|.terragrunt-cache|.terraform|.venv|__pycache__"'
+alias xc='xclip -rmlastnl -selection clipboard'
 
 # Infra
 alias k='kubectl'
@@ -104,16 +105,6 @@ function cpmk()
 
     mkdir -p -v "$dest" || return
     cp -vi "$@"
-}
-
-# shellcheck disable=SC2120
-function xc()
-{
-    if [[ -n "$1" ]] ; then
-        cat "$@" | xclip -rmlastnl -selection clipboard
-    else
-        xclip -rmlastnl -selection clipboard
-    fi
 }
 
 function grt()
