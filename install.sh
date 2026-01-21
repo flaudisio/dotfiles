@@ -30,6 +30,8 @@ EOF
 function install_dotfiles()
 {
     local src_path
+    local target_dir
+    local src_dir
 
     echo "--> Installing dotfiles..."
 
@@ -37,7 +39,17 @@ function install_dotfiles()
     GLOBIGNORE=".:.."
 
     for src_path in "${BASE_DIR}/src"/.* ; do
-        ln -s -v "${LN_OPTS[@]}" "$src_path" "${HOME}"
+        if [[ -f "$src_path" ]] ; then
+            ln -s -v "${LN_OPTS[@]}" "$src_path" "$HOME"
+        elif [[ -d "$src_path" ]] ; then
+            target_dir="${HOME}/$( basename "$src_path" )"
+
+            mkdir -p -v "$target_dir" || continue
+
+            for src_dir in "${src_path}"/* ; do
+                ln -s -v "${LN_OPTS[@]}" "$src_dir" "$target_dir"
+            done
+        fi
     done
 }
 
