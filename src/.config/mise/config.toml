@@ -1,7 +1,4 @@
 [settings]
-# Ref: https://mise.jdx.dev/configuration/settings.html#status.missing_tools
-status.missing_tools = "never"
-
 trusted_config_paths = [
   "~/projects/flaudisio",
   "~/projects/labs",
