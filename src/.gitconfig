@@ -16,9 +16,9 @@
     f = fetch
     fa = fetch --all
     fap = fetch --all --tags --prune
-    faprom = !git fap && git rom
     fdx = clean -i -fdX
     fdxx = clean -i -fdx
+    fr = !git fap && git rebase origin/main
     g = gui
     k = !gitk --all
     l = log

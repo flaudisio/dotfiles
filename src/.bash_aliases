@@ -29,6 +29,7 @@ alias xc='xclip -rmlastnl -selection clipboard'
 
 # Infra
 alias k='kubectl'
+alias kx='kubectx'
 
 # Dev
 alias tig='tig --all'
