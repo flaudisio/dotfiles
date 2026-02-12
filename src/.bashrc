@@ -65,12 +65,3 @@ unset __rc_file
 # export PATH="${PATH}:${GOROOT}/bin"
 export GOPATH="${HOME}/go"
 export PATH="${PATH}:${GOPATH}/bin"
-
-# Tmux (must run last)
-
-: "${ENABLE_TMUX:=""}"
-
-if [[ -n "$ENABLE_TMUX" && $TERM != "screen" ]] ; then
-    unset ENABLE_TMUX
-    exec tmux
-fi
