@@ -12,7 +12,7 @@ set nowritebackup
 filetype on
 filetype plugin off
 syntax on
-colorscheme elflord
+colorscheme zaibatsu
 set background=dark
 
 set number
@@ -28,11 +28,7 @@ set tabstop=4
 " Cursor and columns
 " set cursorline
 set cursorcolumn
-
-" Note: Vim 7.2 does not support 'colorcolumn'
-if exists('+colorcolumn')
-  set colorcolumn=80
-endif
+set colorcolumn=80
 
 highlight CursorColumn ctermbg=234
 highlight ColorColumn ctermbg=234
