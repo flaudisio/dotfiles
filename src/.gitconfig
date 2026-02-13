@@ -64,3 +64,5 @@
     fontdiff = -family \"DejaVu Sans Mono\" -size 9 -weight normal -slant roman -underline 0 -overstrike 0
     spellingdictionary = none
     geometry = 1182x729+0+24 536 439
+[include]
+    path = ~/.gitconfig-extras
