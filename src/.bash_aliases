@@ -105,7 +105,7 @@ function cpmk()
     local -r dest="${*: -1}"
 
     mkdir -p -v "$dest" || return
-    cp -vi "$@"
+    cp -avi "$@"
 }
 
 function grt()
