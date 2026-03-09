@@ -14,11 +14,6 @@ if command -v mise &> /dev/null ; then
     export TG_TF_PATH="${HOME}/.local/share/mise/shims/terraform"
 fi
 
-# (DEPRECATED) Avoid a Terragrunt where it reads *ALL* repository HCLs during destroy
-# Ref: https://github.com/gruntwork-io/terragrunt/issues/4738#issuecomment-3473372131
-# https://terragrunt.gruntwork.io/docs/reference/cli/commands/run/#no-destroy-dependencies-check
-# export TG_NO_DESTROY_DEPENDENCIES_CHECK="1"
-
 # Provider cache for improved performance
 # Ref: https://terragrunt.gruntwork.io/docs/troubleshooting/performance/#provider-cache
 # https://terragrunt.gruntwork.io/docs/reference/cli/commands/run/#provider-cache
