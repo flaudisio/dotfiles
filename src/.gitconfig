@@ -19,6 +19,7 @@
     fdx = clean -i -fdX
     fdxx = clean -i -fdx
     fr = !git fap && git rebase origin/main
+    frc = !git fap && git rebase
     g = gui
     k = !gitk --all
     l = log
