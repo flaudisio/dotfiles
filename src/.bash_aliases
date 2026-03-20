@@ -28,9 +28,11 @@ alias tree-no-git='tree --dirsfirst -F -a -I ".git|.terragrunt-cache|.terraform|
 alias xc='xclip -rmlastnl -selection clipboard'
 
 # Infra
+alias ipcalc-ng='ipcalc-ng --no-decorate'
 alias k='kubectl'
 alias kx='kubectx'
-alias ipcalc-ng='ipcalc-ng --no-decorate'
+alias tf='terraform'
+alias tg='terragrunt'
 
 # Dev
 alias tig='tig --all'
