@@ -11,6 +11,7 @@ readonly BASE_DIR
 
 VIM_PLUGINS=(
     https://github.com/editorconfig/editorconfig-vim.git
+    https://github.com/grafana/vim-alloy.git
     https://github.com/hashivim/vim-terraform.git
 )
 
