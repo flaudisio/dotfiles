@@ -117,6 +117,20 @@ function cpmk()
     cp -avi "$@"
 }
 
+function msh()
+{
+    if grep -q '/mise/installs/' <<< "$PATH" ; then
+        __msg "Already in a mise shell"
+        return 0
+    fi
+
+    local args=()
+
+    [[ -n "$1" ]] && args=( -C "$1" )
+
+    __run mise "${args[@]}" exec -- bash
+}
+
 function grt()
 {
     local repo_root
