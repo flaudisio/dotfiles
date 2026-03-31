@@ -47,6 +47,12 @@ function __msg()
     echo "$*" >&2
 }
 
+function __run()
+{
+    __msg "+ $*"
+    "$@"
+}
+
 if command -v bat > /dev/null ; then
     function diff()
     {
