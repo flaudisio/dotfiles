@@ -58,6 +58,7 @@ au BufNewFile,BufRead Vagrantfile set filetype=ruby
 au BufNewFile,BufRead composer.lock set filetype=json
 au BufNewFile,BufRead docker-compose*.yml set filetype=yaml
 au BufNewFile,BufRead kops-edit*yaml set filetype=yaml
+au BufNewFile,BufRead *.alloy set filetype=hcl
 au BufNewFile,BufRead *.aws/config* set filetype=cfg
 au BufNewFile,BufRead *.aws/credentials* set filetype=cfg
 au BufNewFile,BufRead *.chef/credentials* set filetype=toml
