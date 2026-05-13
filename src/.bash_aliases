@@ -32,7 +32,13 @@ alias ipcalc-ng='ipcalc-ng --no-decorate'
 alias k='kubectl'
 alias kx='kubectx'
 alias tf='terraform'
+alias tfi='tf init'
+alias tfa='tf apply'
+alias tfp='tf plan'
 alias tg='terragrunt'
+alias tgi='tg run -- init'
+alias tga='tg apply'
+alias tgp='tg plan'
 
 # Dev
 alias tig='tig --all'
