@@ -1,0 +1,55 @@
+font-family = JetBrains Mono
+font-size = 11
+adjust-cell-height = 2
+
+bell-features = no-title
+
+# Avoid window title "flickering" and respect 'cursor-style' config
+shell-integration-features = no-title, no-cursor
+
+window-decoration = none
+window-theme = ghostty
+window-inherit-working-directory = false
+
+# Open maximized
+window-width = 500
+window-height = 500
+
+# Theme (custom)
+cursor-style = block
+cursor-style-blink = false
+bold-color = bright
+
+# Theme ("canned")
+# curl -sSL https://terminalcolors.com/downloads/ghostty/github-dark
+background = #010409
+foreground = #e6edf3
+selection-background = #264f78
+selection-foreground = #e6edf3
+cursor-color = #e6edf3
+cursor-text = #010409
+palette = 0=#484f58
+palette = 1=#ff7b72
+palette = 2=#3fb950
+palette = 3=#d29922
+palette = 4=#58a6ff
+palette = 5=#bc8cff
+palette = 6=#39c5cf
+palette = 7=#b1bac4
+palette = 8=#6e7681
+palette = 9=#ffa198
+palette = 10=#56d364
+palette = 11=#e3b341
+palette = 12=#79c0ff
+palette = 13=#d2a8ff
+palette = 14=#56d4dd
+palette = 15=#ffffff
+
+# Keybindings
+keybind = ctrl+enter=text:\n
+keybind = ctrl+shift+arrow_left=goto_split:previous
+keybind = ctrl+shift+arrow_right=goto_split:next
+keybind = ctrl+shift+o=new_split:down
+keybind = ctrl+shift+e=new_split:right
+keybind = shift+arrow_up=scroll_page_lines:-1
+keybind = shift+arrow_down=scroll_page_lines:1
