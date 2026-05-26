@@ -5,6 +5,7 @@ trusted_config_paths = [
 ]
 
 [tools]
+"aqua:simonwhitaker/gibo" = "3"
 aws-cli = { version = "2.34", symlink_bins = "true" }
 copier = "9"
 cosign = "latest"
