@@ -127,7 +127,7 @@ function cpmk()
     cp -avi "$@"
 }
 
-function msh()
+function mm()
 {
     if grep -q '/mise/installs/' <<< "$PATH" ; then
         __msg "Already in a mise shell"
