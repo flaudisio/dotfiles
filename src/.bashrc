@@ -26,7 +26,11 @@ fi
 if [[ $( id -u ) -eq 0 ]] ; then
     PS1='\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='\[\033[01;34m\]\w\[\033[00m\] \$ '
+    if [[ -z "$SSH_CONNECTION" ]] ; then
+        PS1='\[\033[01;34m\]\w\[\033[00m\] \$ '
+    else
+        PS1='\[\033[01;34m\](\h) \w\[\033[00m\] \$ '
+    fi
 fi
 
 # If this is an xterm set the title to user@host:dir
