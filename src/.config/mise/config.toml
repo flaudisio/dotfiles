@@ -5,6 +5,9 @@ trusted_config_paths = [
   "~/projects/labs",
 ]
 
+[settings.python]
+compile = false
+
 [tools]
 "aqua:simonwhitaker/gibo" = "3"
 aws-cli = { version = "2.34", symlink_bins = "true" }
