@@ -218,6 +218,20 @@ function genmac()
     openssl rand -hex 6 | sed -E -e 's|(..)|\1:|g' -e 's|:$||' -e 's|^(.)[13579bdf]|\10|'
 }
 
+function docker_prune()
+{
+    local -r prune_args=( "$@" )
+
+    __run docker system df
+
+    __run docker buildx prune --force --builder default "${prune_args[@]}"
+    __run docker buildx prune --force --builder multiarch "${prune_args[@]}"
+    __run docker buildx stop multiarch
+    __run docker system prune --volumes --force "${prune_args[@]}"
+
+    __run docker system df
+}
+
 function myip()
 {
     local ifconfig_ret
