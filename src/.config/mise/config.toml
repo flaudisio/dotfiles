@@ -1,5 +1,5 @@
 [settings]
-minimum_release_age = "3d"
+minimum_release_age = "2d"
 trusted_config_paths = [
   "~/projects/flaudisio",
   "~/projects/labs",
