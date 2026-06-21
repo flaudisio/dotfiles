@@ -33,8 +33,3 @@ rtk = "latest"
 shellcheck = "latest"
 uv = "latest"
 yq = "4"
-
-[tasks.bash]
-description = "[Global] Run 'mise exec bash'"
-alias = "enter"
-run = "mise exec -- bash"
