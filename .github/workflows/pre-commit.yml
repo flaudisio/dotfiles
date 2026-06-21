@@ -16,6 +16,8 @@ jobs:
         with:
           python-version: "3.12"
       - uses: jdx/mise-action@v4
+        with:
+          install_args: uv
       - uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files --verbose
