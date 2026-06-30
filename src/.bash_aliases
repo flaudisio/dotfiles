@@ -43,6 +43,7 @@ alias tgp='tg plan'
 alias tga='tg apply'
 alias tgd='tg destroy'
 alias tgo='tg output'
+alias tgr='tg run'
 
 # Dev
 alias tig='tig --all'
