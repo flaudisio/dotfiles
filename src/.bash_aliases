@@ -142,6 +142,17 @@ function msh()
     __run mise "${args[@]}" exec -- bash
 }
 
+function mup()
+{
+    local prompt
+
+    __run mise outdated --local --bump
+
+    read -r -p "Bump versions? [y/N] " prompt
+
+    [[ "$prompt" =~ ^([Yy]|yes)$ ]] && __run mise up --local --bump
+}
+
 function grt()
 {
     local repo_root
