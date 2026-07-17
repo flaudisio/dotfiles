@@ -46,6 +46,7 @@ alias tgo='tg output'
 alias tgr='tg run'
 
 # Dev
+alias oc='opencode'
 alias tig='tig --all'
 alias svim='sudo -H vim'
 
