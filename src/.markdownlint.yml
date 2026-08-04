@@ -1,0 +1,7 @@
+---
+# Ref: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+fenced-code-language: false
+no-bare-urls: false
+no-duplicate-heading:
+  siblings_only: true
+table-column-style: false
