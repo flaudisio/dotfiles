@@ -243,6 +243,7 @@ function docker_prune()
     __run docker buildx prune --force --builder default "${prune_args[@]}"
     __run docker buildx prune --force --builder multiarch "${prune_args[@]}"
     __run docker buildx stop multiarch
+    __run docker volume rm buildx_buildkit_multiarch0_state
     __run docker system prune --volumes --force "${prune_args[@]}"
 
     __run docker system df
