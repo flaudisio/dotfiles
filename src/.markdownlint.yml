@@ -1,7 +1,34 @@
 ---
 # Ref: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+default: true
+
+commands-show-output: true
 fenced-code-language: false
+first-line-h1: false
+heading-style:
+  style: atx
+hr-style:
+  style: "---"
+line-length:
+  code_block_line_length: 130
+  line_length: 100
+  tables: false
 no-bare-urls: false
+no-blanks-blockquote: false
 no-duplicate-heading:
   siblings_only: true
+no-inline-html:
+  allowed_elements:
+    - details
+    - DocCardList
+    - kbd
+    - summary
+no-trailing-punctuation:
+  punctuation: ".,;:。，；：！？"  # Note: '!' and '?' are allowed
+single-title:
+  front_matter_title: ""  # Disabled if there's a front matter
 table-column-style: false
+ul-indent:
+  indent: 2
+ul-style:
+  style: dash
