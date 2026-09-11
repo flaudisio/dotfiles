@@ -143,7 +143,7 @@ function msh()
 
     [[ -n "$1" ]] && args=( -C "$1" )
 
-    __run mise "${args[@]}" exec -- bash
+    __run mise "${args[@]}" en
 }
 
 function mup()
