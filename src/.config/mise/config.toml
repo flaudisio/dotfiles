@@ -10,7 +10,7 @@ compile = false
 
 [tools]
 "aqua:simonwhitaker/gibo" = "3"
-aws-cli = { version = "2.34", symlink_bins = "true" }
+aws-cli = { version = "2.36", symlink_bins = "true" }
 copier = "9"
 cosign = "latest"
 dive = "latest"
@@ -18,13 +18,13 @@ doppler = "latest"
 fzf = "latest"
 gh = "2"
 glab = "1"
-go = "1.25"
+go = "1.26"
 granted = "latest"
 hcl2json = "latest"
 helm = "3"
 jnv = "latest"
 k9s = "latest"
-kubectl = "1.34"
+kubectl = "1.37"
 kubectx = "latest"
 lazydocker = "latest"
 lazygit = "latest"
