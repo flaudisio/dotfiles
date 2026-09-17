@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/vim,linux,macos,archives,certificates,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=vim,linux,macos,archives,certificates,visualstudiocode
+# Created by https://www.toptal.com/developers/gitignore/api/vim,linux,macos,archives,certificates,visualstudiocode,dotenv
+# Edit at https://www.toptal.com/developers/gitignore?templates=vim,linux,macos,archives,certificates,visualstudiocode,dotenv
 
 ### Archives ###
 # It's better to unpack these files and commit the raw source because
@@ -42,6 +42,9 @@
 *.cer
 *.der
 *.priv
+
+### dotenv ###
+.env
 
 ### Linux ###
 *~
@@ -130,11 +133,7 @@ tags
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/vim,linux,windows,archives,visualstudiocode,certificates,macos
-
-# ------------------------------------------------------------------------------
-# CUSTOM
-# ------------------------------------------------------------------------------
+# End of https://www.toptal.com/developers/gitignore/api/vim,linux,macos,archives,certificates,visualstudiocode,dotenv
 
 ### External files ###
 
