@@ -165,7 +165,10 @@ function grt()
         return 1
     fi
 
-    [[ "$PWD" != "$repo_root" ]] && cd "$repo_root"
+    [[ "$PWD" == "$repo_root" ]] && return
+
+    cd "$repo_root"
+    [[ -n "$1" ]] && "$@"
 }
 
 # Create empty file, ensuring all parent directories exist
