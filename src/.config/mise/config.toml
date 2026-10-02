@@ -10,7 +10,7 @@ compile = false
 
 [tools]
 "aqua:simonwhitaker/gibo" = "3"
-aws-cli = { version = "2.36", symlink_bins = "true" }
+aws-cli = { version = "2.37", symlink_bins = "true" }
 copier = "9"
 cosign = "latest"
 dive = "latest"
