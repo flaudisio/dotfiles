@@ -55,12 +55,12 @@ With [mise](https://mise.jdx.dev) installed, the repo exposes a few tasks:
 
 | Task | Description |
 | --- | --- |
-| `mise run pre-commit` | Run the pre-commit hooks over all files |
+| `mise run lint` | Run the prek hooks over all files |
 | `mise run bump-version:patch` | Bump the version, commit, and tag |
 | `mise run git-push` | Push the current branch and tags |
 
 `bump-version:major`, `bump-version:minor`, and `bump-version:patch` are available.
-Pre-commit hooks (yamllint, shellcheck, whitespace) also run in CI on every pull request.
+Prek hooks (yamllint, shellcheck, whitespace) also run in CI on every pull request.
 
 ## License
 
