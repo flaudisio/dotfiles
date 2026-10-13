@@ -10,7 +10,6 @@ compile = false
 
 [tools]
 aws-cli = { version = "2.37", symlink_bins = "true" }
-copier = "9"
 cosign = "latest"
 dive = "latest"
 doppler = "latest"
