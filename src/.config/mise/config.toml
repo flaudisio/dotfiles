@@ -9,14 +9,14 @@ trusted_config_paths = [
 compile = false
 
 [tools]
-aws-cli = { version = "2.37", symlink_bins = "true" }
+aws-cli = { version = "2.38", symlink_bins = "true" }
 cosign = "latest"
 dive = "latest"
 doppler = "latest"
 fzf = "latest"
 gh = "2"
 glab = "1"
-go = "1.26"
+go = "1.27"
 granted = "latest"
 hcl2json = "latest"
 helm = "3"
@@ -31,7 +31,7 @@ node = "24"
 "pipx:bump-my-version" = "1"
 "pipx:opencode-monitor" = { version = "1", extras = ["export"] }
 prek = "latest"
-python = "3.13.14"
+python = "3.14"
 ripgrep = "latest"
 shellcheck = "latest"
 uv = "latest"
