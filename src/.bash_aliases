@@ -129,7 +129,7 @@ function cpmk()
     local -r dest="${*: -1}"
 
     mkdir -p -v "$dest" || return
-    cp -avi "$@"
+    cp "$@"
 }
 
 function msh()
