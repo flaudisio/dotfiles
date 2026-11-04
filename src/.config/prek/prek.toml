@@ -1,0 +1,5 @@
+# Ref: https://prek.j178.dev/reference/configuration/
+[update]
+cooldown_days = 2
+freeze = true
+exclude_tags = ["*-{alpha,beta,rc}*"]
