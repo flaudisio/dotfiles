@@ -284,6 +284,32 @@ function tp()
     esac
 }
 
+function wifi_setup()
+{
+    if [[ -n "$1" && ! "$1" =~ ^(-r|--reconnect)$ ]] ; then
+        __msg "Usage: ${FUNCNAME[0]} [-r|--reconnect]"
+        return 2
+    fi
+
+    local -r reconnect="$1"
+    local -r conn="$( nmcli -t -f NAME,TYPE connection show --active | awk -F ':' '$2 == "802-11-wireless" { print $1 }' )"
+
+    if [[ -z "$conn" ]] ; then
+        __msg "No active Wi-Fi connection found"
+        return 0
+    fi
+
+    __msg "Applying settings"
+    __run nmcli connection modify "$conn" ipv4.ignore-auto-dns yes
+    __run nmcli connection modify "$conn" ipv4.dns '1.1.1.1 8.8.8.8'
+    __run nmcli connection modify "$conn" ipv6.method disabled
+
+    if [[ -n "$reconnect" ]] ; then
+        __msg "Reconnecting"
+        __run nmcli connection up "$conn"
+    fi
+}
+
 function shrug()
 {
     echo '¯\_(ツ)_/¯' | xc
