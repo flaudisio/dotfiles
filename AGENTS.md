@@ -34,5 +34,7 @@ symlink target (README clones to `~/.dotfiles`); new files need a fresh `install
 - Markdown config is `src/.markdownlint.yml` (installed as a dotfile, not a root config; not
   run by prek or CI): line length 100, ATX headings, dash lists.
 - `**/.bashrc.d/mise.bash` is Ansible-managed and gitignored; don't create or commit it.
+- Every tool config uses the same ~2-day settling window before adopting a new release; see
+  "Release settling" in the README.
 - Commit style is Conventional Commits with scopes, e.g. `chore(mise):`, `feat:`,
   `chore(deps):`.

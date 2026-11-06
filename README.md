@@ -11,6 +11,12 @@ My personal configuration files, symlinked into `$HOME` by a small installer scr
 Everything under `src/` is the payload; the files in the repo root are tooling for the repo
 itself and are not installed.
 
+## Release settling
+
+Dependency and tool installs wait about two days after an upstream release, so a bad
+version can be yanked before it reaches this machine. Each tool sets it locally: npm
+and prek in days, pnpm in minutes, uv and mise with their own duration strings.
+
 ## Requirements
 
 - `bash` and `git`
