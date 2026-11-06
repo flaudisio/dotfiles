@@ -28,7 +28,7 @@ kubectx = "latest"
 lazydocker = "latest"
 lazygit = "latest"
 markdownlint-cli2 = "latest"
-node = "24"
+node = "26"
 "pipx:bump-my-version" = "1"
 "pipx:opencode-monitor" = { version = "1", extras = ["export"] }
 prek = "latest"
