@@ -31,6 +31,7 @@ markdownlint-cli2 = "latest"
 node = "26"
 "pipx:bump-my-version" = "1"
 "pipx:opencode-monitor" = { version = "1", extras = ["export"] }
+pre-commit = "latest"
 prek = "latest"
 python = "3.14"
 ripgrep = "latest"
