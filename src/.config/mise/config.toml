@@ -9,7 +9,7 @@ trusted_config_paths = [
 compile = false
 
 [tools]
-aws-cli = { version = "2.38", symlink_bins = "true" }
+aws-cli = { version = "2", symlink_bins = "true" }
 cosign = "latest"
 dive = "latest"
 doppler = "latest"
