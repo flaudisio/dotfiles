@@ -1,0 +1,7 @@
+# Note: this file is configured in $RIPGREP_CONFIG_PATH on .bashrc and .profile
+
+# Always use smart-case (case-insensitive unless pattern has uppercase)
+--smart-case
+
+# Always search hidden files
+--hidden

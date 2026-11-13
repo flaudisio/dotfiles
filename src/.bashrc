@@ -69,3 +69,6 @@ unset __rc_file
 # export PATH="${PATH}:${GOROOT}/bin"
 export GOPATH="${HOME}/.local/share/go"
 export PATH="${PATH}:${GOPATH}/bin"
+
+# ripgrep
+[[ -z "$RIPGREP_CONFIG_PATH" ]] && export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc"

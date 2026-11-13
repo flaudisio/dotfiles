@@ -10,6 +10,9 @@ if [ -n "$BASH_VERSION" ] ; then
     fi
 fi
 
+# ripgrep
+[ -z "$RIPGREP_CONFIG_PATH" ] && export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc"
+
 # Improve Qt integration with GTK. Requires 'qt5-style-plugins' package.
 # Ref: https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications#QGtkStyle
 export QT_QPA_PLATFORMTHEME="gtk2"
