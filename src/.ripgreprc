@@ -5,3 +5,6 @@
 
 # Always search hidden files
 --hidden
+
+# Ignore some directories globally
+--glob=!.git/
